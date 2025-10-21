@@ -1,0 +1,323 @@
+/* Nuevo: Usaremos 'Roboto' - Limpio, profesional y muy legible. */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Puedes eliminar o comentar la línea de Poppins si estaba antes */
+
+/* -------------------------------------- */
+/* 1. Reset Básico y Tipografía           */
+/* -------------------------------------- */
+:root {
+  /* ... tus colores se mantienen ... */
+  --primary-color: #004d99;
+  --secondary-color: #f7a000;
+  /* ... */
+
+  /* CAMBIAR ESTA LÍNEA: Aplicar Roboto */
+  --font-family: 'Roboto', sans-serif; 
+  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
+}
+
+/* Modifica el body para aplicar la fuente */
+body {
+  font-family: var(--font-family); 
+  color: var(--text-color);
+  line-height: 1.6;
+  padding-top: 70px;
+  /* ... el resto se mantiene ... */
+}
+
+/* Opcional: Asegúrate de que los encabezados sean un poco más gruesos */
+h1, h2, h3 {
+  font-family: var(--font-family);
+  font-weight: 500; /* Un peso medio para que resalten */
+}
+/* ... el resto del CSS se mantiene igual ... */
+
+/* Haremos que el header sea Fijo para una mejor navegación */
+.header-container {
+    position: fixed; /* <--- AÑADIR: Header fijo */
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    background: var(--primary-color);
+    /* El resto de reglas se mantiene */
+}
+
+/* -------------------------------------- */
+/* 1. Reset Básico y Tipografía           */
+/* -------------------------------------- */
+:root {
+  --primary-color: #004d99; /* Azul Corporativo */
+  --secondary-color: #f7a000; /* Naranja/Amarillo de Contraste */
+  --text-color: #333;
+  --bg-light: #f4f4f4;
+  --font-family: 'Arial', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  line-height: 1.6;
+  background-color: white;
+}
+
+/* Contenedor central para el contenido */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  overflow: hidden;
+  padding: 40px 0;
+}
+
+/* -------------------------------------- */
+/* 2. Header y Navegación                  */
+/* -------------------------------------- */
+.header-container {
+  background: var(--primary-color);
+  color: white;
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+}
+
+.main-nav ul li {
+  margin-left: 25px;
+}
+
+.main-nav a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+  padding: 5px 0;
+}
+
+.main-nav a:hover {
+  color: var(--secondary-color);
+}
+
+.cta-button {
+  background-color: var(--secondary-color);
+  color: white !important;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-decoration: none !important;
+  font-weight: bold;
+}
+
+/* -------------------------------------- */
+/* 3. Hero Section (Sección Principal)    */
+/* -------------------------------------- */
+.hero-section {
+  background: var(--bg-light);
+  padding: 60px 5%;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.hero-image-placeholder {
+  flex: 1;
+  min-height: 300px;
+  background: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  border-radius: 8px;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-content h1 {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+}
+
+.hero-content p {
+  font-size: 1.2em;
+  margin-bottom: 25px;
+}
+
+/* -------------------------------------- */
+/* 4. Servicios y Secciones Secundarias   */
+/* -------------------------------------- */
+section {
+  padding: 40px 0;
+}
+
+.services-summary {
+  background: white;
+  text-align: center;
+}
+
+.services-summary h2, .value-proposition h2 {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+.service-cards-placeholder {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  background: var(--bg-light);
+  padding: 20px;
+  border-radius: 8px;
+  flex: 1;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: left;
+}
+
+.card h3 {
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+/* -------------------------------------- */
+/* 5. Footer (Pie de Página)              */
+/* -------------------------------------- */
+.footer-container {
+  background: #333;
+  color: white;
+  padding: 30px 5%;
+  font-size: 0.9em;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #555;
+}
+
+.footer-links h3 {
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.footer-links p a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+}
+
+.social-media span {
+  margin-left: 10px;
+  font-size: 1.2em;
+}
+
+/* Hero Section */
+.hero-section {
+    /* Mantenemos el fondo claro o lo cambiamos a blanco puro si prefieres */
+    background: white; 
+    padding: 80px 5%; /* Más espacio vertical */
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    box-shadow: var(--shadow-light); /* Sombra sutil al final del Hero */
+}
+
+.hero-image-placeholder {
+    flex: 1;
+    min-height: 350px; /* Más altura */
+    background: var(--bg-light); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    border-radius: 12px; /* Esquinas más suaves */
+    overflow: hidden;
+}
+
+.hero-content h1 {
+    font-size: 3em; /* Título más grande */
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.3em;
+    margin-bottom: 35px;
+    color: #555;
+}
+
+/* Botón CTA (Añadir animación de hover) */
+.cta-button {
+    background-color: var(--secondary-color); 
+    color: white !important; 
+    padding: 12px 25px; /* Botón más grande */
+    border-radius: 30px; /* Forma de píldora */
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease; /* Transición suave */
+    display: inline-block;
+}
+
+.cta-button:hover {
+    background-color: #e69100; /* Un poco más oscuro al pasar el ratón */
+    transform: translateY(-2px); /* Efecto de "levantamiento" */
+    box-shadow: 0 4px 10px rgba(247, 160, 0, 0.4);
+}
+
+/* Estilo para la cuadrícula de servicios (Asesoría Fiscal, Contabilidad Completa, etc.) */
+.services-summary .service-cards-placeholder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 columnas o más */
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.service-card { /* Esta es la tarjeta individual que usamos en Services.js */
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light); /* Sombra elegante */
+    transition: transform 0.3s ease;
+    border-left: 5px solid var(--primary-color); /* Toque de color */
+}
+
+.service-card:hover {
+    transform: translateY(-5px); /* Efecto de levantamiento al pasar el ratón */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.service-card h3 {
+    color: var(--primary-color);
+    font-size: 1.4em;
+    margin-bottom: 10px;
+}
+
+.service-card p {
+    color: #666;
+}
