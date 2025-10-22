@@ -1,81 +1,78 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Typography, Grid, IconButton } from '@mui/material';
-// Importa íconos de Material UI (Asegúrate de que 'npm install @mui/icons-material' se haya ejecutado)
+import { Box, Typography, Link, Grid, Container } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom'; // Usamos RouterLink para la navegación interna
 import FacebookIcon from '@mui/icons-material/Facebook';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
+
+
+// PALETA DE COLORES
+const PRIMARY_DARK = '#005B96';        // Títulos de sección en el footer
+const MAIN_TEXT_COLOR = '#2B2B2B';     // Fondo del footer (Negro)
+const SUB_TEXT_COLOR = '#7A7A7A';      // Color para Copyright (Gris)
 
 const Footer = () => {
-  return (
-    // Box actúa como el contenedor principal del footer, con un fondo oscuro
-    <Box 
-      component="footer" 
-      sx={{ 
-        bgcolor: '#222222', // Fondo muy oscuro
-        color: '#ffffff',   // Texto blanco
-        py: 6, // Padding vertical: 6 unidades (aprox 48px)
-        px: 3  // Padding horizontal
-      }}
-    >
-      <Grid container spacing={4} sx={{ maxWidth: 1200, margin: '0 auto' }}>
+    return (
+        // 1. Fondo Negro. color: 'white' hace que el texto principal (Typography) sea blanco.
+        <Box sx={{ bgcolor: MAIN_TEXT_COLOR, color: 'white', py: 6 }}> 
+            <Container>
+                <Grid container spacing={4}>
+                    
+                    {/* COLUMNA 1: Información de Contacto */}
+                    <Grid item xs={12} md={4}>
+                        <Typography variant="h6" gutterBottom sx={{ color: PRIMARY_DARK }}>
+                            CONTAHSA
+                        </Typography>
+                        <Typography variant="body2">
+                            Contabilidad y Asesoría de Honduras.
+                        </Typography>
+                        <Typography variant="body2" sx={{ mt: 1 }}>
+                            Email: placeholder@contabilidad.com
+                        </Typography>
+                        <Typography variant="body2">
+                            Teléfono: +504 XXXX-XXXX
+                        </Typography>
+                        { <Box sx={{ mt: 2 }}>
+                            <Link href="https://facebook.com" target="_blank" color="inherit" sx={{ mr: 1 }}>
+                                <FacebookIcon />
+                            </Link>
+                            <Link href="https://linkedin.com" target="_blank" color="inherit">
+                                <LinkedInIcon />
+                            </Link>
+                        </Box> }
+                    </Grid>
 
-        {/* Columna 1: Información de Contacto */}
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6" gutterBottom sx={{ color: '#f7a000', fontWeight: 'bold' }}>
-            Contacto
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            <EmailIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 1 }} />
-            Email: placeholder@contabilidad.com
-          </Typography>
-          <Typography variant="body2">
-            Teléfono: +(504) XXXX-XXXX
-          </Typography>
-          
-          {/* Íconos de Redes Sociales */}
-          <Box sx={{ mt: 2 }}>
-            <IconButton color="inherit" aria-label="Facebook" href="[LINK FACEBOOK]">
-              <FacebookIcon />
-            </IconButton>
-            <IconButton color="inherit" aria-label="LinkedIn" href="[LINK LINKEDIN]">
-              <LinkedInIcon />
-            </IconButton>
-          </Box>
-        </Grid>
+                    {/* COLUMNA 2: Enlaces Rápidos */}
+                    <Grid item xs={12} md={4}>
+                        <Typography variant="h6" gutterBottom sx={{ color: PRIMARY_DARK }}>
+                            Enlaces
+                        </Typography>
+                        {/* Aseguramos color blanco para los enlaces */}
+                        <Link component={RouterLink} to="/" color="inherit" underline="hover" display="block">Inicio</Link>
+                        <Link component={RouterLink} to="/services" color="inherit" underline="hover" display="block">Servicios</Link>
+                        <Link component={RouterLink} to="/about" color="inherit" underline="hover" display="block">Nosotros</Link>
+                        <Link component={RouterLink} to="/contact" color="inherit" underline="hover" display="block">Contacto</Link>
+                    </Grid>
 
-        {/* Columna 2: Navegación Rápida */}
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6" gutterBottom sx={{ color: '#f7a000', fontWeight: 'bold' }}>
-            Información
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-            <Link to="/sobre-nosotros" style={{ color: '#cccccc', textDecoration: 'none' }}>Sobre Nosotros</Link>
-            <Link to="/servicios" style={{ color: '#cccccc', textDecoration: 'none' }}>Servicios</Link>
-            <Link to="/faqs" style={{ color: '#cccccc', textDecoration: 'none' }}>Preguntas Frecuentes</Link>
-          </Box>
-        </Grid>
+                    {/* COLUMNA 3: Legal y Social */}
+                     <Grid item xs={12} md={4}>
+                        <Typography variant="h6" gutterBottom sx={{ color: PRIMARY_DARK }}>
+                            Legal
+                        </Typography>
+                        <Link href="#" color="inherit" underline="hover" display="block">Términos y Condiciones</Link>
+                        <Link href="#" color="inherit" underline="hover" display="block">Política de Privacidad</Link>
+                    </Grid>
 
-        {/* Columna 3: Legal y Políticas */}
-        <Grid item xs={12} sm={4}>
-          <Typography variant="h6" gutterBottom sx={{ color: '#f7a000', fontWeight: 'bold' }}>
-            Legal
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-            <Link to="/politica-privacidad" style={{ color: '#cccccc', textDecoration: 'none' }}>Política de Privacidad</Link>
-            <Link to="/terminos-servicio" style={{ color: '#cccccc', textDecoration: 'none' }}>Términos de Servicio</Link>
-          </Box>
-        </Grid>
-      </Grid>
-
-      {/* Sección de Copyright */}
-      <Box sx={{ textAlign: 'center', pt: 4, borderTop: '1px solid #444', mt: 4 }}>
-        <Typography variant="caption" color="#cccccc">
-          © {new Date().getFullYear()} [NOMBRE DEL FIRMA]. Todos los derechos reservados.
-        </Typography>
-      </Box>
-    </Box>
-  );
+                </Grid>
+                
+                {/* Copyright */}
+                <Box sx={{ textAlign: 'center', pt: 4, mt: 4, borderTop: `1px solid ${SUB_TEXT_COLOR}` }}>
+                    <Typography variant="body2" color={SUB_TEXT_COLOR}>
+                        &copy; {new Date().getFullYear()} CONTAHSA. Todos los derechos reservados.
+                    </Typography>
+                </Box>
+            </Container>
+        </Box>
+    );
 };
 
 export default Footer;

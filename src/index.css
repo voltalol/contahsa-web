@@ -17,6 +17,7 @@
   --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
 }
 
+
 /* Modifica el body para aplicar la fuente */
 body {
   font-family: var(--font-family); 
