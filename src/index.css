@@ -18,12 +18,13 @@
 }
 
 
+
 /* Modifica el body para aplicar la fuente */
 body {
   font-family: var(--font-family); 
   color: var(--text-color);
   line-height: 1.6;
-  padding-top: 70px;
+  padding-top: 0px;
   /* ... el resto se mantiene ... */
 }
 
