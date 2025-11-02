@@ -1,169 +1,521 @@
 import React from 'react';
+
+import { Box, Typography, Container, Button, Grid, Paper } from '@mui/material';
+
 import { Link } from 'react-router-dom';
-import { Box, Typography, Button, Grid, Container, Card, CardContent } from '@mui/material';
-import SavingsIcon from '@mui/icons-material/Savings';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import ShieldIcon from '@mui/icons-material/Shield'; 
-import GavelIcon from '@mui/icons-material/Gavel'; // 🎉 Importado el ícono de martillo
 
-// 🚀 Asume que el componente Hero está en esta ruta.
-import Hero from '../components/Hero'; 
+import { DollarSign, TrendingUp, Shield, ChevronRight } from 'lucide-react';
 
-// PALETA DE COLORES OFICIAL DE CONTAHSA
-const PRIMARY_DARK = '#005B96';        
+
+
+// Colores definidos en el diseño (tomados de Navbar.js)
+
+const PRIMARY_DARK = '#000000ff';        
+
 const ACCENT_GREEN = '#00A79D';        
-const PRIMARY_MEDIUM = '#007FC4';      
-const MAIN_TEXT_COLOR = '#2B2B2B';     
-const SUB_TEXT_COLOR = '#7A7A7A';      
-const LIGHT_GREY = '#f7f9fc';          
-const WHITE = '#FFFFFF';               
 
-// Datos de Valor de CONTAHSA (Mantenidos uniformes)
+const WHITE = '#FFFFFF';              
+
+const LIGHT_GREY = '#F8F9FA';
+
+
+
+// Datos para la sección de Valor/Servicios
+
 const valueProps = [
-    { 
-        icon: <SavingsIcon />, 
-        title: "Optimización Fiscal", 
-        details: "Maximizamos tus deducciones legales y minimizamos tu carga tributaria, garantizando siempre el cumplimiento con la ley hondureña.", 
+
+    {
+
+        icon: DollarSign,
+
+        title: "Optimización Fiscal",
+
+        details: "Maximizamos tus deducciones legales y minimizamos tu carga tributaria, garantizando siempre el cumplimiento con la ley hondureña.",
+
     },
-    { 
-        icon: <TrendingUpIcon />, 
-        title: "Análisis Estratégico", 
-        details: "Transformamos tus datos contables en reportes accionables para que tomes decisiones que impulsen el crecimiento y la rentabilidad de tu negocio.",
+
+    {
+
+        icon: TrendingUp,
+
+        title: "Análisis Estratégico",
+
+        details: "Transformamos tus datos contables en reportes accionables para que tomes decisiones que impulsen el crecimiento y la rentabilidad.",
+
     },
-    { 
-        icon: <ShieldIcon />, 
-        title: "Tranquilidad Garantizada", 
-        details: "Nos encargamos de todo el ciclo de impuestos (SAR, ISR, ISV, Planillas). Cero errores, cero multas y 100% de cumplimiento garantizado.",
+
+    {
+
+        icon: Shield,
+
+        title: "Tranquilidad Garantizada",
+
+        details: "Nos encargamos de todo el ciclo de impuestos (SAR, ISR, ISV, Planillas). Cero errores, cero multas y 100% de cumplimiento.",
+
     },
+
 ];
 
-const HomePage = () => {
+
+
+const Home = () => {
+
     return (
+
         <Box>
-            
-            {/* 1. HERO SECTION (Componente Modular) */}
-            <Hero />
-            
-            {/* 2. SECCIÓN: NUESTRO VALOR (Tarjetas de tamaño y contenido alineado con Flexbox y minHeight) */}
-            <Box sx={{ py: 8, bgcolor: LIGHT_GREY, px: 3 }}>
-                <Container maxWidth="lg">
-                    <Typography 
-                        variant="h4" 
-                        component="h2" 
-                        align="center" 
-                        sx={{ color: PRIMARY_DARK, fontWeight: 600, mb: 2 }}
+
+            {/* === SECCIÓN 1: HERO (INICIO) - CON VIDEO DE FONDO Y LOGO GIGANTE === */}
+
+            <Box
+
+                sx={{
+
+                    position: 'relative',
+
+                    // Establece la altura mínima al 100% de la altura de la ventana (100vh) para que el video ocupe todo el espacio visible
+
+                    minHeight: { xs: '750px', sm: '850px', md: '100vh' },
+
+                    overflow: 'hidden',
+
+                    display: 'flex',
+
+                    alignItems: 'center', // Centra el Container verticalmente
+
+                    justifyContent: 'center',
+
+                    textAlign: 'center',
+
+                    color: WHITE,
+
+                    py: { xs: 8, md: 0 }
+
+                }}
+
+            >
+
+                {/* ELEMENTO DE VIDEO DE FONDO (Ocupa el 100% del Box) */}
+
+                <video
+
+                    autoPlay
+
+                    loop
+
+                    muted
+
+                    playsInline
+
+                    style={{
+
+                        position: 'absolute',
+
+                        top: 0,
+
+                        left: 0,
+
+                        width: '100%',
+
+                        height: '100%',
+
+                        objectFit: 'cover',
+
+                        zIndex: -2,
+
+                        filter: 'brightness(0.6) grayscale(0.2)',
+
+                    }}
+
+                >
+
+                    <source src="/7593784-hd_1920_1080_25fps.mp4" type="video/mp4" />
+
+                    Tu navegador no soporta la etiqueta de video.
+
+                </video>
+
+
+
+                {/* OVERLAY SEMI-TRANSPARENTE */}
+
+                <Box
+
+                    sx={{
+
+                        position: 'absolute',
+
+                        top: 0,
+
+                        left: 0,
+
+                        width: '100%',
+
+                        height: '100%',
+
+                        bgcolor: 'rgba(0, 0, 0, 0.4)',
+
+                        zIndex: -1,
+
+                    }}
+
+                />
+
+
+
+                {/* CONTENIDO PRINCIPAL (Logo, Texto, Botón) */}
+
+                <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, py: { xs: 4, md: 0 } }}>
+
+                    {/* Contenedor del Logo/Marca (TAMAÑO GIGANTE) */}
+
+                    <Box sx={{ mb: 4, display: 'flex', justifyContent: 'center' }}>
+
+                        <img
+
+                            src="/contahsalogo2.png"
+
+                            alt="Logo CONTÁHSA"
+
+                            style={{
+
+                                height: 'auto',
+
+                                // AJUSTE: Reducimos MaxHeight para que el texto suba y el logo sea visible.
+
+                                maxHeight: '600px',
+
+                                maxWidth: '90%',
+
+                                width: 'auto',
+
+                                filter: `drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.4))`
+
+                            }}
+
+                        />
+
+                    </Box>
+
+                   
+
+                    {/* Subtítulo / Propuesta de Valor */}
+
+                    <Typography
+
+                        variant="h5"
+
+                        component="h2"
+
+                        sx={{
+
+                            color: WHITE,
+
+                            fontWeight: 700,
+
+                            mb: 6,
+
+                            maxWidth: 700,
+
+                            mx: 'auto',
+
+                            textShadow: '0 2px 6px rgba(0,0,0,0.7)'
+
+                        }}
+
                     >
-                        ¿Por qué elegir a CONTAHSA?
+
+                        Servicios contables, financieros y tributarios de alta calidad, adaptados a tus necesidades.
+
                     </Typography>
-                    <Typography 
-                        variant="h6" 
-                        align="center" 
-                        sx={{ color: SUB_TEXT_COLOR, mb: 6 }}
+
+
+
+                    {/* Botón CTA - AGENDA TU ASESORÍA GRATUITA */}
+
+                    <Button
+
+                        component={Link}
+
+                        to="/contact"
+
+                        variant="contained"
+
+                        size="large"
+
+                        sx={{
+
+                            bgcolor: ACCENT_GREEN,
+
+                            color: WHITE,
+
+                            fontWeight: 700,
+
+                            py: 1.5,
+
+                            px: 4,
+
+                            borderRadius: '50px',
+
+                            fontSize: '1.1rem',
+
+                            boxShadow: '0 6px 12px rgba(0, 167, 157, 0.4)',
+
+                            transition: 'all 0.3s ease',
+
+                            '&:hover': {
+
+                                bgcolor: PRIMARY_DARK,
+
+                                boxShadow: '0 8px 16px rgba(0, 91, 150, 0.4)',
+
+                                transform: 'translateY(-2px)',
+
+                            }
+
+                        }}
+
                     >
-                        Te ofrecemos más que contabilidad; te brindamos una ventaja estratégica.
-                    </Typography>
-                    
-                    <Grid container spacing={4} alignItems="stretch"> 
-                        {valueProps.map((prop, index) => (
-                            <Grid item xs={12} md={4} key={index}>
-                                <Card 
-                                    elevation={4} 
-                                    sx={{ 
-                                        textAlign: 'center', 
-                                        p: 4, 
-                                        height: '100%', 
-                                        display: 'flex', 
-                                        flexDirection: 'column', 
-                                        justifyContent: 'space-between', 
-                                        borderBottom: `5px solid ${ACCENT_GREEN}`, 
-                                        transition: '0.3s', 
-                                        '&:hover': { transform: 'translateY(-5px)', boxShadow: 8 } 
-                                    }}
-                                >
-                                    <CardContent sx={{ 
-                                        flexGrow: 1, 
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        alignItems: 'center'
-                                     }}> 
-                                        {/* Ícono grande en color principal */}
-                                        {React.cloneElement(prop.icon, { sx: { color: PRIMARY_DARK, fontSize: 55, mb: 2 } })}
-                                        
-                                        {/* Título de la Tarjeta */}
-                                        <Typography 
-                                            variant="h5" 
-                                            component="h3" 
-                                            gutterBottom 
-                                            sx={{ color: MAIN_TEXT_COLOR, fontWeight: 600 }}
-                                        >
-                                            {prop.title}
-                                        </Typography>
-                                        
-                                        {/* Descripción con minHeight para igualar el espacio */}
-                                        <Typography 
-                                            variant="body1" 
-                                            sx={{ 
-                                                color: SUB_TEXT_COLOR, 
-                                                mb: 3,
-                                                minHeight: { xs: 'auto', md: '75px' } 
-                                            }}
-                                        >
-                                            {prop.details}
-                                        </Typography>
-                                    </CardContent>
-                                    
-                                    {/* Contenedor Box para centrar el botón y limitar su ancho */}
-                                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                                        <Button 
-                                            component={Link} 
-                                            to="/services" 
-                                            variant="outlined" 
-                                            size="small" 
-                                            sx={{ 
-                                                color: ACCENT_GREEN, 
-                                                borderColor: ACCENT_GREEN, 
-                                                '&:hover': { bgcolor: 'rgba(0, 167, 157, 0.1)' },
-                                                minWidth: 120,
-                                            }}
-                                        >
-                                            SABER MÁS
-                                        </Button>
-                                    </Box>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
+
+                        AGENDA TU ASESORÍA GRATUITA
+
+                        <ChevronRight style={{ marginLeft: 8, width: 20 }} />
+
+                    </Button>
+
                 </Container>
+
             </Box>
-            
-            {/* 3. SECCIÓN: LLAMADA A LA ACCIÓN (CTA - Testimonio) */}
-            <Box sx={{ py: 8, bgcolor: PRIMARY_DARK, px: 3 }}>
-                <Container maxWidth="md" sx={{ textAlign: 'center', color: WHITE }}>
-                    {/* 🎉 CAMBIO AQUÍ: Ahora es un martillo */}
-                    <GavelIcon sx={{ fontSize: 50, color: ACCENT_GREEN, mb: 2 }} />
-                    <Typography 
-                        variant="h4" 
-                        component="h2" 
-                        gutterBottom 
-                        sx={{ fontWeight: 600, mb: 4 }}
+
+
+
+            {/* === SECCIÓN 2: VALORES CLAVE / SERVICIOS === */}
+
+            <Box sx={{ bgcolor: LIGHT_GREY, py: { xs: 10, md: 16 } }}>
+
+                <Container maxWidth="lg">
+
+                    <Typography
+
+                        variant="h4"
+
+                        component="h2"
+
+                        align="center"
+
+                        sx={{ fontWeight: 700, color: PRIMARY_DARK, mb: { xs: 3, md: 2 } }}
+
                     >
-                        Más que Cumplimiento: Crecimiento
+
+                        ¿Por qué elegir a CONTÁHSA?
+
                     </Typography>
-                    
-                    {/* Testimonio Integrado para generar confianza */}
-                    <Card elevation={0} sx={{ p: 4, mb: 4, bgcolor: PRIMARY_MEDIUM, borderRadius: 2 }}>
-                        <Typography variant="h6" fontStyle="italic" sx={{ color: WHITE }}>
-                            "Contar con CONTAHSA fue la mejor decisión. Su gestión fiscal y asesoría estratégica nos dio la tranquilidad para escalar nuestro negocio sin preocupaciones legales."
-                        </Typography>
-                        <Typography variant="subtitle1" sx={{ color: 'rgba(255, 255, 255, 0.7)', mt: 2, fontWeight: 'bold' }}>
-                            — Roberto Fúnez, CEO de Logística HN
-                        </Typography>
-                    </Card>
+
+                    <Typography
+
+                        variant="h6"
+
+                        align="center"
+
+                        sx={{ color: '#6C757D', mb: { xs: 8, md: 10 } }}
+
+                    >
+
+                        Te ofrecemos más que contabilidad; te brindamos una ventaja estratégica.
+
+                    </Typography>
+
+
+
+                    <Grid container spacing={4} justifyContent="center">
+
+                        {valueProps.map((prop, index) => {
+
+                            const IconComponent = prop.icon;
+
+                            return (
+
+                                <Grid item xs={12} sm={6} md={4} key={index}>
+
+                                    <Paper
+
+                                        elevation={3}
+
+                                        sx={{
+
+                                            p: 4,
+
+                                            borderRadius: 2,
+
+                                            textAlign: 'center',
+
+                                            height: '100%',
+
+                                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+
+                                            borderBottom: `4px solid ${ACCENT_GREEN}`,
+
+                                            '&:hover': {
+
+                                                transform: 'translateY(-5px)',
+
+                                                boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
+
+                                            }
+
+                                        }}
+
+                                    >
+
+                                        <Box sx={{ color: PRIMARY_DARK, mb: 2 }}>
+
+                                            <IconComponent size={48} style={{ color: ACCENT_GREEN }} />
+
+                                        </Box>
+
+                                        <Typography variant="h5" component="h3" sx={{ fontWeight: 600, mb: 1.5, color: PRIMARY_DARK }}>
+
+                                            {prop.title}
+
+                                        </Typography>
+
+                                        <Typography variant="body1" sx={{ color: '#343A40' }}>
+
+                                            {prop.details}
+
+                                        </Typography>
+
+                                        <Button
+
+                                            component={Link}
+
+                                            to="/services"
+
+                                            variant="text"
+
+                                            sx={{
+
+                                                mt: 3,
+
+                                                color: ACCENT_GREEN,
+
+                                                fontWeight: 600,
+
+                                                '&:hover': { textDecoration: 'underline' }
+
+                                            }}
+
+                                        >
+
+                                            SABER MÁS
+
+                                        </Button>
+
+                                    </Paper>
+
+                                </Grid>
+
+                            );
+
+                        })}
+
+                    </Grid>
+
                 </Container>
+
+            </Box>
+
+
+
+            {/* === SECCIÓN 3: CTA FINAL (CONTÁCTANOS) === */}
+
+            <Box sx={{ bgcolor: PRIMARY_DARK, py: { xs: 8, md: 12 }, textAlign: 'center' }}>
+
+                <Container maxWidth="md">
+
+                    <Typography
+
+                        variant="h4"
+
+                        component="h2"
+
+                        sx={{ fontWeight: 700, color: WHITE, mb: 2 }}
+
+                    >
+
+                        Tu Tranquilidad Fiscal es Nuestra Prioridad.
+
+                    </Typography>
+
+                    <Typography
+
+                        variant="h6"
+
+                        sx={{ color: '#DEDEDE', mb: 5 }}
+
+                    >
+
+                        Déjanos manejar tu contabilidad mientras te enfocas en expandir tu negocio.
+
+                    </Typography>
+
+                    <Button
+
+                        component={Link}
+
+                        to="/contact"
+
+                        variant="contained"
+
+                        size="large"
+
+                        sx={{
+
+                            bgcolor: ACCENT_GREEN,
+
+                            color: PRIMARY_DARK,
+
+                            fontWeight: 800,
+
+                            py: 1.5,
+
+                            px: 6,
+
+                            borderRadius: '50px',
+
+                            fontSize: '1.2rem',
+
+                            boxShadow: '0 6px 12px rgba(0, 167, 157, 0.4)',
+
+                            transition: 'all 0.3s ease',
+
+                            '&:hover': {
+
+                                bgcolor: WHITE,
+
+                                boxShadow: '0 8px 16px rgba(255, 255, 255, 0.4)',
+
+                                transform: 'translateY(-2px)',
+
+                            }
+
+                        }}
+
+                    >
+
+                        INICIA TU ASESORÍA AHORA
+
+                    </Button>
+
+                </Container>
+
             </Box>
 
         </Box>
+
     );
+
 };
 
-export default HomePage;
+
+
+export default Home;
