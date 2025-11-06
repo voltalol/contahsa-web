@@ -122,15 +122,14 @@ const serviceData = [
             "Asesoría en cumplimiento laboral."
         ],
     },
-    {
+{
         title: "Servicios Adicionales",
         icon: Star,
         colorName: 'indigo',
-        summary: "Soluciones complementarias: Desde la implementación de sistemas hasta la constitución legal de su empresa, le damos soporte integral.",
+        summary: "Soluciones complementarias que le brindan tranquilidad, desde la preparación para auditorías hasta la asistencia en trámites legales y contables.",
         details: [
-            "Implementación de sistemas contables (Contífico, Alegra, QuickBooks).",
             "Auditorías internas o preparación para auditorías externas.",
-            "Constitución de empresas (registro mercantil, RTN, licencias)."
+            "Servicio de Ventanilla Única: Pregúntenos cualquier cosa, le ayudamos con cualquier trámite o gestión legal/contable.",
         ],
     },
 ];
