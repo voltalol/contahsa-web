@@ -16,7 +16,8 @@ const WHITE = '#FFFFFF';                // ⬜ Texto Blanco
 const BLACK = '#000000';                // ⬛ Texto Negro para el botón
 
 // 📱 Configuración de WhatsApp
-const WHATSAPP_NUMBER = '50494876829'; // Número de ejemplo (ajusta este número si tienes el correcto)
+// Importante: Asegúrate de reemplazar este número por el oficial.
+const WHATSAPP_NUMBER = '50494876829'; 
 const WHATSAPP_MESSAGE = 'Hola, me gustaría recibir una consulta gratuita de CONTAHSA.';
 
 const Navbar = () => {
@@ -60,7 +61,6 @@ const Navbar = () => {
         <Box
             sx={{ 
                 width: 300, 
-                // Fondo blanco para el menú, contrastando con el fondo negro del AppBar
                 backgroundColor: WHITE, 
                 height: '100%',
                 display: 'flex',
@@ -78,7 +78,7 @@ const Navbar = () => {
                     borderBottom: `2px solid ${PRIMARY_DARK}` 
                 }}
             >
-                {/* Logo Pequeño (Usando un contenedor con fondo negro para imitar el logo completo) */}
+                {/* Logo Pequeño */}
                 <Box sx={{ p: 0.5, bgcolor: PRIMARY_DARK, borderRadius: 1 }}>
                     <img 
                         src="/contahsalogosintexto.png" 
@@ -111,7 +111,7 @@ const Navbar = () => {
                 ))}
             </List>
 
-            {/* Botón de WhatsApp 'Consultar Ahora' (Fijo en el fondo del Drawer) */}
+            {/* Botón de WhatsApp 'Consultar Ahora' (Se mantiene en el Drawer para fácil acceso) */}
             <Box sx={{ p: 2, borderTop: `1px solid #ccc` }}>
                 <Button
                     variant="contained"
@@ -120,7 +120,7 @@ const Navbar = () => {
                     fullWidth
                     sx={{
                         backgroundColor: ACCENT_GREEN, 
-                        color: BLACK, // Texto negro en el botón verde
+                        color: BLACK, 
                         '&:hover': {
                             backgroundColor: ACCENT_GREEN_DARK, 
                         },
@@ -168,7 +168,6 @@ const Navbar = () => {
                 <Box sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     <Link to="/" onClick={() => handleNavigationAndClose('/')}>
                         <img 
-                            // Asumo que esta ruta de imagen es correcta
                             src="/contahsalogosintexto.png" 
                             alt="Logo CONTAHSA" 
                             style={{ 
@@ -180,7 +179,7 @@ const Navbar = () => {
                     </Link>
                 </Box>
 
-                {/* === 2. LINKS DE NAVEGACIÓN (ESCRITORIO) === */}
+                {/* === 2. LINKS DE NAVEGACIÓN (ESCRITORIO - CENTRO) === */}
                 <Box 
                     sx={{ 
                         flexGrow: 1, 
@@ -191,7 +190,7 @@ const Navbar = () => {
                     }}
                 >
                     {navLinks
-                        .filter(link => link.title !== 'CONTACTO') // Quitamos Contacto de aquí
+                        .filter(link => link.title !== 'CONTACTO')
                         .map((link) => (
                             <Button 
                                 key={link.title}
@@ -216,46 +215,41 @@ const Navbar = () => {
                     display: 'flex', 
                     alignItems: 'center', 
                     flexShrink: 0,
-                    // Espaciado para evitar que el menú colisione con el botón en móvil
-                    gap: { xs: 0.5, md: 2 } 
+                    gap: { xs: 0, md: 2 } // Reducido el gap en móvil a 0
                 }}>
                     
-                    {/* Botón de WhatsApp (Visible en Escritorio y Móvil, pero solo icono en Móvil) */}
+                    {/* Botón de WhatsApp (SOLO ESCRITORIO) */}
                     <Button 
                         variant="contained" 
                         onClick={handleWhatsAppClick}
                         startIcon={<WhatsAppIcon />}
                         sx={{ 
+                            // <-- CAMBIO CLAVE: Ocultar en móvil (xs) -->
+                            display: { xs: 'none', md: 'inline-flex' }, 
                             bgcolor: ACCENT_GREEN, 
                             color: BLACK,
-                            px: { xs: 1.5, md: 3 }, // Menos padding en móvil
-                            py: { xs: 1, md: 1.5 },
+                            px: 3, 
+                            py: 1.5,
                             fontWeight: 700,
                             borderRadius: 1,
-                            minWidth: { xs: 'auto', md: 100 }, // Reduce el tamaño mínimo en móvil
                             boxShadow: '0 4px 10px rgba(0, 167, 157, 0.4)',
                             '&:hover': { 
                                 bgcolor: ACCENT_GREEN_DARK, 
                                 boxShadow: '0 4px 12px rgba(0, 140, 131, 0.5)' 
-                            } ,
-                            // Oculta el texto en pantallas pequeñas, solo muestra el icono
-                            '& .MuiButton-startIcon': { mr: { xs: 0, md: 1 } },
-                            '& .MuiButton-label': { display: { xs: 'none', md: 'block' } }
+                            } 
                         }}
                     >
-                        <Box component="span" sx={{ display: { xs: 'none', md: 'block' } }}>
-                            CONTÁCTANOS
-                        </Box>
+                        CONTÁCTANOS
                     </Button>
 
 
-                    {/* Botón de Menú de Hamburguesa (Solo Móvil) */}
+                    {/* Botón de Menú de Hamburguesa (SOLO MÓVIL) */}
                     {isMobile && (
                         <IconButton
                             edge="start"
                             aria-label="menu"
                             onClick={() => setDrawerOpen(true)}
-                            sx={{ color: WHITE }} // Color blanco para el icono en fondo negro
+                            sx={{ color: WHITE }} 
                         >
                             <MenuIcon fontSize="large" />
                         </IconButton>
