@@ -16,8 +16,7 @@ const WHITE = '#FFFFFF';                // ⬜ Texto Blanco
 const BLACK = '#000000';                // ⬛ Texto Negro para el botón
 
 // 📱 Configuración de WhatsApp
-// Importante: Asegúrate de reemplazar este número por el oficial.
-const WHATSAPP_NUMBER = '50494876829'; 
+const WHATSAPP_NUMBER = '50494876832'; 
 const WHATSAPP_MESSAGE = 'Hola, me gustaría recibir una consulta gratuita de CONTAHSA.';
 
 const Navbar = () => {
@@ -36,14 +35,13 @@ const Navbar = () => {
         { title: 'NOSOTROS', path: '/about' },
         { title: 'SERVICIOS', path: '/services' },
         { title: 'BLOG', path: '/blog' },
-        { title: 'CONTACTO', path: '/contact' }, // Añadido para mostrar en el menú móvil
+        { title: 'CONTACTO', path: '/contact' }, 
     ];
 
     // Función para manejar la navegación y asegurar el scroll al inicio
     const handleNavigationAndClose = (path) => {
-        setDrawerOpen(false); // Cierra el menú móvil si está abierto
+        setDrawerOpen(false); 
         navigate(path);
-        // Desplazamiento suave al inicio de la página
         window.scrollTo({
             top: 0,
             behavior: 'smooth' 
@@ -78,11 +76,12 @@ const Navbar = () => {
                     borderBottom: `2px solid ${PRIMARY_DARK}` 
                 }}
             >
-                {/* Logo Pequeño */}
+                {/* Logo Pequeño en el Drawer (Usamos el mismo logo compacto que en el móvil) */}
                 <Box sx={{ p: 0.5, bgcolor: PRIMARY_DARK, borderRadius: 1 }}>
                     <img 
-                        src="/contahsalogosintexto.png" 
-                        alt="Logo CONTAHSA" 
+                        // Usamos el logo alternativo para el menú lateral también
+                        src="/contahsalogo2.png" 
+                        alt="Logo CONTAHSA Compacto" 
                         style={{ height: '30px', width: 'auto' }} 
                     />
                 </Box>
@@ -111,7 +110,7 @@ const Navbar = () => {
                 ))}
             </List>
 
-            {/* Botón de WhatsApp 'Consultar Ahora' (Se mantiene en el Drawer para fácil acceso) */}
+            {/* Botón de WhatsApp 'Consultar Ahora' */}
             <Box sx={{ p: 2, borderTop: `1px solid #ccc` }}>
                 <Button
                     variant="contained"
@@ -159,7 +158,6 @@ const Navbar = () => {
                     py: 0, 
                     alignItems: 'center', 
                     minHeight: appBarHeight, 
-                    // Asegura padding horizontal en móviles
                     px: { xs: 2, sm: 3, md: 0 } 
                 }}
             >
@@ -167,6 +165,7 @@ const Navbar = () => {
                 {/* === 1. SECCIÓN DEL LOGO (Izquierda) === */}
                 <Box sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
                     <Link to="/" onClick={() => handleNavigationAndClose('/')}>
+                        {/* Logo Principal (ESCRITORIO) */}
                         <img 
                             src="/contahsalogosintexto.png" 
                             alt="Logo CONTAHSA" 
@@ -174,6 +173,21 @@ const Navbar = () => {
                                 height: 'auto', 
                                 maxHeight: '60px', 
                                 width: 'auto',
+                                // OCULTAR EN PANTALLAS PEQUEÑAS
+                                display: isMobile ? 'none' : 'block'
+                            }} 
+                        />
+                        {/* Logo Compacto (MÓVIL) */}
+                        <img 
+                            // <-- CAMBIO DE IMAGEN AQUÍ -->
+                            src="/contahsalogo2.png" 
+                            alt="Logo CONTAHSA Compacto" 
+                            style={{ 
+                                height: 'auto', 
+                                maxHeight: '45px', // Un poco más pequeño para móvil
+                                width: 'auto',
+                                // MOSTRAR SOLO EN PANTALLAS PEQUEÑAS
+                                display: isMobile ? 'block' : 'none'
                             }} 
                         />
                     </Link>
@@ -215,7 +229,7 @@ const Navbar = () => {
                     display: 'flex', 
                     alignItems: 'center', 
                     flexShrink: 0,
-                    gap: { xs: 0, md: 2 } // Reducido el gap en móvil a 0
+                    gap: { xs: 0, md: 2 } 
                 }}>
                     
                     {/* Botón de WhatsApp (SOLO ESCRITORIO) */}
@@ -224,7 +238,6 @@ const Navbar = () => {
                         onClick={handleWhatsAppClick}
                         startIcon={<WhatsAppIcon />}
                         sx={{ 
-                            // <-- CAMBIO CLAVE: Ocultar en móvil (xs) -->
                             display: { xs: 'none', md: 'inline-flex' }, 
                             bgcolor: ACCENT_GREEN, 
                             color: BLACK,
