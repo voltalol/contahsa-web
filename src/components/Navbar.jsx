@@ -180,7 +180,7 @@ const Navbar = () => {
                         {/* Logo Compacto (MÓVIL) */}
                         <img 
                             // <-- CAMBIO DE IMAGEN AQUÍ -->
-                            src="/contahsalogo2.png" 
+                            src="/contahsalogosintexto.png" 
                             alt="Logo CONTAHSA Compacto" 
                             style={{ 
                                 height: 'auto', 

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Box, Typography, Container, Button, Grid, Paper, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Importamos useNavigate
 import { DollarSign, TrendingUp, Shield, ChevronRight } from 'lucide-react';
 // 1. IMPORTACIÓN CLAVE: Importamos el componente de lógica de animación
 import ScrollAnimation from './ScrollAnimation';
@@ -31,8 +31,14 @@ const valueProps = [
 ];
 
 const Home = () => {
-    // Definición de estilos de transición para elementos interactivos
+    const navigate = useNavigate(); // Hook para navegación programática
     const transitionStyle = 'transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease';
+
+    // FUNCIÓN CORREGIDA: Fuerza el scroll a la parte superior de la ventana antes de navegar.
+    const handleContactClick = useCallback(() => {
+        window.scrollTo(0, 0); // Esto fuerza el desplazamiento al inicio de la ventana
+        navigate('/contact');
+    }, [navigate]);
 
     return (
         <Box sx={{ width: '100%', overflowX: 'hidden' }}>
@@ -124,11 +130,10 @@ const Home = () => {
                         </Typography>
                     </ScrollAnimation>
 
-                    {/* Botón CTA */}
+                    {/* Botón CTA (Inicio) - Utilizamos onClick y useNavigate */}
                     <ScrollAnimation delay={0.4}>
                         <Button
-                            component={Link}
-                            to="/contact"
+                            onClick={handleContactClick} // Llama a la función que hace scroll y navega
                             variant="contained"
                             size="large"
                             sx={{
@@ -262,11 +267,10 @@ const Home = () => {
                         </Typography>
                     </ScrollAnimation>
 
-                    {/* Botón CTA */}
+                    {/* Botón CTA (Final) - Utilizamos onClick y useNavigate */}
                     <ScrollAnimation delay={0.2}>
                         <Button
-                            component={Link}
-                            to="/contact"
+                            onClick={handleContactClick} // Llama a la función que hace scroll y navega
                             variant="contained"
                             size="large"
                             sx={{
