@@ -1,31 +1,86 @@
-import React, { useState } from 'react';
-import { Box, Typography, Container, Grid, Paper, Collapse, IconButton, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'; 
+import React, { useState, useEffect } from 'react';
+// Íconos de Lucide React
+import {
+    Wallet,
+    Scale,
+    TrendingUp,
+    Users,
+    Star,
+    ChevronDown,
+    Check,
+    Lightbulb,
+    ArrowRight,
+    MessageCircle, // Nuevo ícono para WhatsApp
+} from 'lucide-react';
 
-// Importación simulada de íconos de Material UI
-import { 
-    AccountBalanceWallet as ContabilidadIcon, 
-    Gavel as FiscalIcon,              
-    TrendingUp as FinanzasIcon,              
-    Groups as PlanillaIcon,              
-    Star as AdicionalesIcon,
-    ExpandMore as ExpandMoreIcon,
-    CheckCircle as CheckIcon, 
-    Lightbulb as IdeaIcon 
-} from '@mui/icons-material'; 
+// --- DEFINICIÓN DE COLORES Y ESTILOS NATIVOS ---
 
-// --- PALETA DE COLORES Y ESTILOS ---
-const PRIMARY_COLOR = '#005B96';      // Azul Oscuro (Primario CONTAHSA)
-const ACCENT_COLOR = '#00A79D';      // Verde Azulado (Acento CONTAHSA)
-const LIGHT_BACKGROUND = '#f7f9fc';  // Fondo Suave
-const TEXT_DARK = '#2B2B2B';          // Texto Principal
-const SUB_TEXT_COLOR = '#7A7A7A';     // Texto Secundario/Gris
+// Colores de la paleta (Hexadecimales)
+const COLORS = {
+    PRIMARY: '#3730a3', // Indigo-800
+    ACCENT: '#06b6d4',  // Cyan-500
+    BACKGROUND_LIGHT: '#f9fafb', // Gray-50
+    TEXT_DARK: '#1f2937', // Gray-900
+    // Fondos suaves para tarjetas
+    INDIGO_LIGHT: '#e0e7ff', // Indigo-100
+    CYAN_LIGHT: '#cffafe', // Cyan-100
+    TEXT_GRAY: '#4b5563', // Gray-600
+    WHATSAPP: '#25D366', // Color oficial de WhatsApp
+};
 
-// --- DATOS DE SERVICIOS (Extraídos del PDF de CONTAHSA) ---
+// Estilos base reutilizables
+const baseStyles = {
+    pageContainer: {
+        backgroundColor: COLORS.BACKGROUND_LIGHT,
+        fontFamily: 'Inter, sans-serif',
+        paddingTop: '3rem', // py-12
+        paddingBottom: '5rem', // py-20
+    },
+    contentWrapper: {
+        maxWidth: '1280px', // max-w-7xl
+        margin: '0 auto',
+        paddingLeft: '1rem', // px-4
+        paddingRight: '1rem',
+        '@media (min-width: 640px)': {
+            paddingLeft: '1.5rem', // sm:px-6
+            paddingRight: '1.5rem',
+        },
+        '@media (min-width: 1024px)': {
+            paddingLeft: '2rem', // lg:px-8
+            paddingRight: '2rem',
+        },
+    },
+    header: {
+        textAlign: 'center',
+        maxWidth: '900px', // max-w-4xl
+        margin: '0 auto',
+        marginBottom: '3rem', // mb-12
+        '@media (min-width: 768px)': {
+            marginBottom: '4rem', // md:mb-16
+        },
+    },
+    gridContainer: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(1, 1fr)',
+        gap: '2rem', // gap-8
+        '@media (min-width: 768px)': {
+            gridTemplateColumns: 'repeat(2, 1fr)', // md:grid-cols-2
+        },
+        '@media (min-width: 1024px)': {
+            gridTemplateColumns: 'repeat(3, 1fr)', // lg:grid-cols-3
+        },
+        '@media (min-width: 1280px)': {
+            gap: '2.5rem', // xl:gap-10
+        },
+    },
+};
+
+// --- DATOS DE SERVICIOS ---
 const serviceData = [
     {
         title: "Servicios Contables Básicos",
-        icon: ContabilidadIcon,
-        color: PRIMARY_COLOR,
+        icon: Wallet,
+        colorName: 'indigo',
         summary: "El cimiento de su gestión: garantizamos registros precisos y reportes financieros oportunos para una visibilidad total de su negocio.",
         details: [
             "Registro de transacciones (diario, mayor, balance).",
@@ -36,8 +91,8 @@ const serviceData = [
     },
     {
         title: "Servicios Fiscales",
-        icon: FiscalIcon,
-        color: ACCENT_COLOR,
+        icon: Scale,
+        colorName: 'cyan',
         summary: "Cumplimiento total en Honduras: Nos encargamos de todas sus obligaciones fiscales para evitar multas y asegurar su tranquilidad legal.",
         details: [
             "Declaraciones mensuales y anuales (ISR, ISV, RAP, IHSS, Retención en la fuente 1%, Retención del 12.5% Honorarios).",
@@ -47,8 +102,8 @@ const serviceData = [
     },
     {
         title: "Asesoría y Planificación Financiera",
-        icon: FinanzasIcon,
-        color: PRIMARY_COLOR,
+        icon: TrendingUp,
+        colorName: 'indigo',
         summary: "Estrategia para el crecimiento: Proyectamos el futuro de su empresa, analizamos su rentabilidad y ofrecemos un diagnóstico claro para la toma de decisiones.",
         details: [
             "Proyecciones de flujo de caja, Estados Financieros Sensibilizados.",
@@ -58,8 +113,8 @@ const serviceData = [
     },
     {
         title: "Planilla y Recursos Humanos",
-        icon: PlanillaIcon,
-        color: ACCENT_COLOR,
+        icon: Users,
+        colorName: 'cyan',
         summary: "Gestión laboral sin errores: Procesamos su nómina y gestionamos las obligaciones con el personal conforme a la ley hondureña.",
         details: [
             "Cálculo y elaboración de planillas.",
@@ -69,8 +124,8 @@ const serviceData = [
     },
     {
         title: "Servicios Adicionales",
-        icon: AdicionalesIcon,
-        color: PRIMARY_COLOR,
+        icon: Star,
+        colorName: 'indigo',
         summary: "Soluciones complementarias: Desde la implementación de sistemas hasta la constitución legal de su empresa, le damos soporte integral.",
         details: [
             "Implementación de sistemas contables (Contífico, Alegra, QuickBooks).",
@@ -80,223 +135,381 @@ const serviceData = [
     },
 ];
 
-// --- 1. COMPONENTE DE TARJETA DE SERVICIO INTERACTIVA ---
-const ServiceCard = ({ service }) => {
-    // Estado para controlar la expansión de los detalles
-    const [expanded, setExpanded] = useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+// Función para generar el enlace de WhatsApp con el mensaje codificado
+const generateWhatsAppLink = (serviceTitle) => {
+    // Número de Honduras con código de país
+    const phoneNumber = '50494876832'; 
     
+    // Mensaje predefinido con la estructura solicitada
+    const message = `Hola, me gustaría consultar sobre el servicio de ${serviceTitle} que ofrece Contahsa. ¿Podrían darme más información?`;
+    
+    // Codifica el mensaje para la URL
+    const encodedMessage = encodeURIComponent(message);
+
+    return `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+};
+
+// --- COMPONENTE DE TARJETA DE SERVICIO INTERACTIVA ---
+const ServiceCard = ({ service, index }) => {
+    const [expanded, setExpanded] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isVisible, setIsVisible] = useState(false); // Estado para la animación de entrada (simulación ScrollAnimation)
+    
+    // Genera el enlace de WhatsApp específico para este servicio
+    const whatsappLink = generateWhatsAppLink(service.title);
+
+    // Simula la detección de visibilidad al cargar (similar a Intersection Observer)
+    useEffect(() => {
+        // Retraso escalonado para las tarjetas (150ms * index)
+        const delay = 150 * index;
+        const timer = setTimeout(() => {
+            setIsVisible(true);
+        }, delay);
+        return () => clearTimeout(timer);
+    }, [index]);
+
     const IconComponent = service.icon;
 
+    // Asignar colores HEX basados en el nombre del color
+    const primaryHex = service.colorName === 'indigo' ? COLORS.PRIMARY : COLORS.ACCENT;
+    const backgroundHex = service.colorName === 'indigo' ? COLORS.INDIGO_LIGHT : COLORS.CYAN_LIGHT;
+
+    const cardStyles = {
+        padding: '2rem', // p-8
+        height: '100%',
+        borderRadius: '1rem', // rounded-2xl
+        backgroundColor: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        borderLeft: `8px solid ${primaryHex}`, // border-l-8
+        boxShadow: isHovered 
+            ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)' // shadow-2xl
+            : '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)', // shadow-xl
+        
+        // Animación de aparición (ScrollAnimation simulada)
+        opacity: isVisible ? '1' : '0',
+        transform: isVisible ? 'translateY(0)' : 'translateY(30px)', // Animación de abajo hacia arriba
+        transition: 'opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease-in-out',
+        transitionDelay: `${index * 0.15}s`, // Staggered effect
+        
+        cursor: 'default',
+        '@media (min-width: 640px)': {
+            padding: '2rem', // sm:p-8
+        }
+    };
+
+    // Estilos para el nuevo botón de WhatsApp (más pequeño)
+    const whatsappButtonStyles = {
+        display: 'inline-flex', 
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '0.5rem 1rem', // Padding más pequeño
+        borderRadius: '9999px', // rounded-full (más suave)
+        backgroundColor: COLORS.WHATSAPP,
+        color: 'white',
+        fontSize: '0.9rem', // Tamaño de fuente ligeramente más pequeño
+        fontWeight: '600', // font-semibold
+        textDecoration: 'none', 
+        transition: 'background-color 0.2s ease, transform 0.2s ease',
+        border: 'none',
+        cursor: 'pointer',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    };
+    
+    const detailsStyles = {
+        overflow: 'hidden',
+        transition: 'max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out',
+        maxHeight: expanded ? '1000px' : '0', // Valor alto para simular max-h-screen
+        paddingTop: expanded ? '1rem' : '0', // pt-4
+    };
+
     return (
-        <Paper 
-            elevation={6} 
-            sx={{ 
-                p: { xs: 3, sm: 4 }, 
-                height: '100%', 
-                borderRadius: '16px',
-                borderTop: `6px solid ${service.color}`, 
-                transition: 'transform 0.4s, box-shadow 0.4s',
-                backgroundColor: 'white',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                '&:hover': { 
-                    transform: 'translateY(-8px)', 
-                    boxShadow: `0 20px 40px rgba(0, 91, 150, 0.15)` 
-                } 
-            }}
+        <div
+            style={cardStyles}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
         >
-            <Box>
+            <div>
                 {/* Ícono grande y colorido */}
-                <IconComponent 
-                    sx={{ 
-                        fontSize: { xs: 50, md: 60 }, 
-                        color: service.color, 
-                        mb: 2,
-                        p: 1.5,
-                        borderRadius: '50%',
-                        backgroundColor: `${service.color}10`, // Fondo muy claro
-                    }} 
-                />
-                
-                {/* Título */}
-                <Typography 
-                    variant="h5" 
-                    component="h3" 
-                    gutterBottom 
-                    sx={{ 
-                        fontWeight: 700, 
-                        color: TEXT_DARK,
-                        mt: 1
+                <div 
+                    style={{
+                        width: '4rem', // w-16
+                        height: '4rem', // h-16
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: '9999px', // rounded-full
+                        marginBottom: '1rem', // mb-4
+                        color: primaryHex,
+                        backgroundColor: backgroundHex,
                     }}
                 >
+                    <IconComponent style={{ width: '2rem', height: '2rem' }} /> {/* w-8 h-8 */}
+                </div>
+
+                {/* Título */}
+                <h3 style={{ 
+                    fontSize: '1.5rem', // text-2xl
+                    fontWeight: '800', // font-extrabold
+                    color: COLORS.TEXT_DARK,
+                    marginTop: '0.25rem', // mt-1
+                    marginBottom: '0.5rem', // mb-2
+                }}>
                     {service.title}
-                </Typography>
+                </h3>
 
                 {/* Resumen */}
-                <Typography 
-                    variant="body1" 
-                    sx={{ 
-                        color: TEXT_DARK, 
-                        mb: 2, 
-                        minHeight: '60px'
-                    }}
-                >
+                <p style={{ 
+                    fontSize: '1rem', // text-base
+                    color: COLORS.TEXT_GRAY,
+                    marginBottom: '1rem', // mb-4
+                    minHeight: '60px', // min-h-[60px]
+                    lineHeight: '1.625', // leading-relaxed
+                }}>
                     {service.summary}
-                </Typography>
-            </Box>
+                </p>
+                
+                {/* Contenedor para alinear el botón de WhatsApp a la derecha */}
+                <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'flex-end', // ALINEACIÓN A LA DERECHA
+                    marginBottom: '1rem', // Espacio abajo
+                }}>
+                    {/* --- BOTÓN DE WHATSAPP (CONSULTAR AHORA) --- */}
+                    <a
+                        href={whatsappLink}
+                        target="_blank" // Abre en una nueva pestaña
+                        rel="noopener noreferrer"
+                        style={whatsappButtonStyles}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = '#1DA851'; // Un verde más oscuro al pasar el ratón
+                            e.currentTarget.style.transform = 'translateY(-2px)'; // Efecto de elevación
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = COLORS.WHATSAPP;
+                            e.currentTarget.style.transform = 'translateY(0)';
+                        }}
+                    >
+                        <MessageCircle style={{ width: '1rem', height: '1rem', marginRight: '0.5rem' }} />
+                        Consultar Ahora
+                    </a>
+                </div>
+                {/* Fin del contenedor de alineación */}
 
-            <Box sx={{ mt: 'auto' }}>
-                {/* Botón de Expansión/Interactivo */}
-                <IconButton
-                    onClick={handleExpandClick}
+            </div>
+
+            <div style={{ marginTop: 'auto' }}>
+                
+                {/* Botón de Expansión/Interactivo (Saber Más) - Siempre alineado a la izquierda */}
+                <button
+                    onClick={() => setExpanded(!expanded)}
                     aria-expanded={expanded}
                     aria-label="mostrar detalles"
-                    sx={{
-                        color: service.color,
-                        p: 0,
-                        transition: 'transform 0.3s',
-                        transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                        fontWeight: 600,
-                        '&:hover': { backgroundColor: 'transparent' }
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontSize: '0.875rem', // text-sm
+                        fontWeight: '700', // font-semibold
+                        color: primaryHex,
+                        padding: '0',
+                        transition: 'opacity 0.3s',
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                        cursor: 'pointer',
+                        textTransform: 'uppercase',
+                        outline: 'none',
                     }}
+                    onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
+                    onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                 >
-                    <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '1rem', mr: 1, textTransform: 'uppercase' }}>
-                        {expanded ? 'Ocultar Detalles' : 'Ver Detalles'}
-                    </Box>
-                    <ExpandMoreIcon />
-                </IconButton>
+                    <span style={{ marginRight: '0.25rem' }}>
+                        {expanded ? 'Ocultar Detalles' : 'Ver Detalles del Servicio'}
+                    </span>
+                    <ChevronDown 
+                        style={{ 
+                            width: '1.25rem', // w-5
+                            height: '1.25rem', // h-5
+                            transition: 'transform 0.3s',
+                            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }} 
+                    />
+                </button>
 
                 {/* Sección Colapsable para los Detalles */}
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <List disablePadding sx={{ mt: 2 }}>
+                <div style={detailsStyles}>
+                    <ul style={{ 
+                        listStyle: 'none',
+                        padding: '0',
+                        margin: '0',
+                        marginTop: expanded ? '0.5rem' : '0', // Agregar margen arriba si está expandido
+                        lineHeight: '1.5',
+                    }}>
                         {service.details.map((detail, index) => (
-                            <ListItem key={index} disableGutters sx={{ py: 0.5 }}>
-                                <ListItemIcon sx={{ minWidth: '30px', color: ACCENT_COLOR }}>
-                                    <CheckIcon fontSize="small" />
-                                </ListItemIcon>
-                                <ListItemText 
-                                    primary={detail} 
-                                    primaryTypographyProps={{ 
-                                        variant: 'body2', 
-                                        color: SUB_TEXT_COLOR, 
-                                        lineHeight: 1.4
-                                    }}
-                                />
-                            </ListItem>
+                            <li key={index} style={{ 
+                                display: 'flex',
+                                alignItems: 'flex-start',
+                                fontSize: '0.875rem', // text-sm
+                                color: COLORS.TEXT_GRAY,
+                                marginBottom: '0.5rem'
+                            }}>
+                                <Check style={{ 
+                                    width: '1rem', // w-4
+                                    height: '1rem', // h-4
+                                    marginTop: '0.125rem', // mt-1
+                                    marginRight: '0.5rem', // mr-2
+                                    color: COLORS.ACCENT, // Color fijo cian
+                                    flexShrink: 0,
+                                }} /> 
+                                <span>{detail}</span>
+                            </li>
                         ))}
-                    </List>
-                </Collapse>
-            </Box>
-        </Paper>
+                    </ul>
+                </div>
+            </div>
+        </div>
     );
 };
 
-// --- 2. COMPONENTE PRINCIPAL (Services) ---
-// Se renombra la función a Services y se mantiene como la exportación por defecto
-export default function Services() {
+// --- COMPONENTE PRINCIPAL (Services Page) ---
+const ServicesPage = () => {
+    const [isCtaVisible, setIsCtaVisible] = useState(false); // Estado para la animación del CTA
+    
+    // 1. Hook para hacer SCROLL AL TOPE al cargar la página
+    useEffect(() => {
+        // Asegura que el scroll esté en la parte superior (0, 0) al montar el componente.
+        if (window) {
+            window.scrollTo(0, 0);
+        }
+    }, []);
+
+    // 2. Hook para simular la visibilidad del CTA (animación)
+    useEffect(() => {
+        // El CTA aparece después de que las tarjetas hayan comenzado a aparecer
+        const timer = setTimeout(() => {
+            setIsCtaVisible(true);
+        }, 800); 
+        return () => clearTimeout(timer);
+    }, []);
+
+    const ctaStyles = {
+        marginTop: '4rem', // mt-16
+        '@media (min-width: 768px)': { marginTop: '6rem' }, // md:mt-24
+        padding: '2rem', // p-8
+        '@media (min-width: 640px)': { padding: '3rem' }, // sm:p-12
+        borderRadius: '1rem', // rounded-2xl
+        textAlign: 'center',
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', // shadow-2xl
+        backgroundColor: COLORS.PRIMARY,
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        
+        // Animación de aparición (ScrollAnimation simulada)
+        opacity: isCtaVisible ? '1' : '0',
+        transform: isCtaVisible ? 'translateY(0)' : 'translateY(30px)', // Animación de abajo hacia arriba
+        transition: 'opacity 0.6s ease-out, transform 0.6s ease-out',
+        transitionDelay: '0.8s', // Retraso mayor para el CTA
+    };
+
+    // Usaremos el mismo enlace de WhatsApp genérico para el CTA
+    const genericWhatsappLink = generateWhatsAppLink("Consulta General");
+
     return (
-        <Container 
-            maxWidth="lg" 
-            sx={{ 
-                py: { xs: 4, md: 8 }, 
-                px: { xs: 2, sm: 3 }, 
-                minHeight: '100vh', 
-                backgroundColor: LIGHT_BACKGROUND,
-                fontFamily: 'Inter, sans-serif'
-            }}
-        >
-            {/* Título Principal */}
-            <Box textAlign="center" mb={{ xs: 6, md: 10 }}>
-                <Typography 
-                    variant="h2" 
-                    component="h1" 
-                    sx={{ 
-                        fontWeight: 800, 
-                        color: PRIMARY_COLOR, 
-                        fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
-                        mb: 2
-                    }}
-                >
-                    Nuestros Servicios Integrales
-                </Typography>
-                <Typography 
-                    variant="h6" 
-                    color={TEXT_DARK}
-                    sx={{ 
-                        maxWidth: '700px', 
-                        mx: 'auto',
-                        fontSize: { xs: '1rem', md: '1.25rem' }
-                    }}
-                >
-                    CONTAHSA ofrece una gestión contable y fiscal sin complicaciones, 
-                    permitiéndole concentrarse en el crecimiento de su negocio en Honduras.
-                </Typography>
-            </Box>
-
-            {/* Grid de Tarjetas de Servicio */}
-            <Grid container spacing={{ xs: 4, md: 5 }} justifyContent="center">
-                {serviceData.map((service, index) => (
-                    <Grid item key={index} xs={12} sm={6} md={4}>
-                        <ServiceCard service={service} />
-                    </Grid>
-                ))}
-            </Grid>
+        <div style={baseStyles.pageContainer}>
             
-            {/* Call to Action Final */}
-            <Paper 
-                elevation={12} 
-                sx={{ 
-                    mt: { xs: 8, md: 12 }, 
-                    p: { xs: 4, md: 8 },
-                    minHeight: { xs: 150, sm: 200 }, 
-                    borderRadius: '16px',
-                    textAlign: 'center',
-                    backgroundColor: PRIMARY_COLOR, 
-                    color: 'white',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <IdeaIcon 
-                    sx={{ 
-                        fontSize: { xs: 50, md: 60 }, 
-                        color: ACCENT_COLOR, 
-                        mb: 2 
-                    }} 
-                />
-                <Typography 
-                    variant="h4" 
-                    component="h2" 
-                    sx={{ 
-                        fontWeight: 800, 
-                        color: 'white',
-                        fontSize: { xs: '1.5rem', sm: '2rem' },
-                        mb: 1
-                    }}
-                >
-                    Deje la Carga Contable en Manos Expertas
-                </Typography>
-                <Typography 
-                    variant="h6" 
-                    sx={{ 
-                        color: 'white',
-                        maxWidth: '800px',
-                        mx: 'auto',
-                        fontWeight: 300,
-                        fontSize: { xs: '1rem', sm: '1.25rem' }
-                    }}
-                >
-                    Nuestro enfoque es darle la claridad financiera y la tranquilidad fiscal que necesita para tomar decisiones estratégicas y enfocarse en el crecimiento de su PyME en Honduras.
-                </Typography>
-            </Paper>
+            <div style={baseStyles.contentWrapper}>
+                
+                {/* Título Principal */}
+                <header style={baseStyles.header}>
+                    <h1 style={{ 
+                        fontSize: '2.25rem', // text-4xl
+                        '@media (min-width: 640px)': { fontSize: '3rem' }, // sm:text-5xl
+                        '@media (min-width: 768px)': { fontSize: '3.75rem' }, // md:text-6xl
+                        fontWeight: '800', // font-extrabold
+                        color: COLORS.PRIMARY,
+                        marginBottom: '1rem', // mb-4
+                        lineHeight: '1.2', // leading-tight
+                    }}>
+                        Nuestros Servicios Integrales
+                    </h1>
+                    <p style={{ 
+                        fontSize: '1.125rem', // text-xl
+                        '@media (min-width: 768px)': { fontSize: '1.5rem' }, // md:text-2xl
+                        color: COLORS.TEXT_DARK,
+                        fontWeight: '300', // font-light
+                    }}>
+                        CONTAHSA ofrece una gestión contable y fiscal sin complicaciones, 
+                        permitiéndole concentrarse en el crecimiento de su negocio en Honduras.
+                    </p>
+                </header>
 
-        </Container>
+                {/* Grid de Tarjetas de Servicio */}
+                <div style={baseStyles.gridContainer}>
+                    {serviceData.map((service, index) => (
+                        <ServiceCard key={index} service={service} index={index} />
+                    ))}
+                </div>
+                
+                {/* Call to Action Final */}
+                <div style={ctaStyles}>
+                    <Lightbulb style={{ 
+                        width: '2.5rem', // w-10 h-10
+                        height: '2.5rem', 
+                        '@media (min-width: 640px)': { width: '3rem', height: '3rem' }, // sm:w-12 sm:h-12
+                        color: COLORS.ACCENT,
+                        marginBottom: '1rem', // mb-4
+                    }} />
+                    <h2 style={{ 
+                        fontSize: '1.875rem', // text-3xl
+                        '@media (min-width: 640px)': { fontSize: '2.25rem' }, // sm:text-4xl
+                        fontWeight: '800', // font-extrabold
+                        marginBottom: '0.75rem', // mb-3
+                    }}>
+                        Deje la Carga Contable en Manos Expertas
+                    </h2>
+                    <p style={{ 
+                        fontSize: '1.125rem', // text-lg
+                        '@media (min-width: 640px)': { fontSize: '1.25rem' }, // sm:text-xl
+                        fontWeight: '300', // font-light
+                        maxWidth: '768px', // max-w-3xl
+                        marginBottom: '2rem', // mb-8
+                    }}>
+                        Nuestro enfoque es darle la claridad financiera y la tranquilidad fiscal que necesita para tomar decisiones estratégicas y enfocarse en el crecimiento de su PyME en Honduras.
+                    </p>
+                    <a href={genericWhatsappLink} target="_blank" rel="noopener noreferrer" style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '0.75rem 2rem', // px-8 py-3
+                        border: '1px solid transparent',
+                        fontSize: '1rem', // text-base
+                        fontWeight: '700', // font-bold
+                        borderRadius: '9999px', // rounded-full
+                        color: COLORS.PRIMARY,
+                        backgroundColor: 'white',
+                        transition: 'all 0.3s ease-in-out',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                        textDecoration: 'none', // Asegura que no haya subrayado
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#f3f4f6'; // hover:bg-gray-100
+                        e.currentTarget.style.transform = 'scale(1.02)'; // hover:scale-[1.02]
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'white';
+                        e.currentTarget.style.transform = 'scale(1)';
+                    }}
+                    >
+                        Solicitar Consulta Gratuita
+                        <ArrowRight style={{ marginLeft: '0.5rem', width: '1.25rem', height: '1.25rem' }} />
+                    </a>
+                </div>
+            </div>
+        </div>
     );
-}
+};
+
+export default ServicesPage;

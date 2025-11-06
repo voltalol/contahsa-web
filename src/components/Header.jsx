@@ -1,111 +1,224 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { 
+    AppBar, Toolbar, Typography, Button, Box, 
+    IconButton, Drawer, List, ListItem, ListItemText, 
+    Container, useTheme, useMediaQuery
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import CloseIcon from '@mui/icons-material/Close';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
-// 1. PALETA DE COLORES
-const PRIMARY_BLUE = '#000000ff';        // 🟦 Azul Oscuro de la marca (Ya no se usa en hover)
-const ACCENT_GREEN = '#000000ff';        // 🟩 Verde de Acento
-const ACCENT_GREEN_DARK = '#000000ff';   // 🟩 Verde Oscuro para el HOVER
-const HEADER_DARK = '#000000';         // ⬛ Fondo del Header (Negro)
-const TEXT_LIGHT = '#FFFFFF';          // ⬜ Texto Blanco
+// 🎨 PALETA DE COLORES CONTAHSA (Basada en tu Footer)
+const PRIMARY_BLUE = '#005B96'; // Azul primario para el header/botón
+const ACCENT_GREEN = '#00A79D'; // Verde de acento
+const BACKGROUND_WHITE = '#FFFFFF';
+const TEXT_DARK = '#333333';
+const WHATSAPP_NUMBER = '50494876832'; // Número de teléfono (sin + ni guiones)
+const WHATSAPP_MESSAGE = 'Hola, me gustaría recibir más información sobre los servicios contables de CONTAHSA.';
+
+// 🔗 Estructura de navegación
+const navItems = [
+    { label: 'Inicio', path: '/' },
+    { label: 'Nosotros', path: '/about' },
+    { label: 'Servicios', path: '/services' },
+    { label: 'Blog', path: '/blog' },
+    { label: 'Contacto', path: '/contact' },
+];
 
 const Header = () => {
+    const theme = useTheme();
+    // Determinar si es una pantalla pequeña (móvil/tablet)
+    const isMobile = useMediaQuery(theme.breakpoints.down('md')); 
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const navigate = useNavigate();
+
+    // Función para manejar el scroll al navegar (tomada de la lógica del Footer)
+    const handleNavigationAndClose = (path) => {
+        setDrawerOpen(false); // Cierra el menú móvil
+        navigate(path);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' 
+        });
+    };
+
+    // Función para abrir el chat de WhatsApp
+    const handleWhatsAppClick = () => {
+        // Enlace wa.me con el número y mensaje codificado
+        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+        window.open(whatsappUrl, '_blank');
+    };
+
+    // Estilos de los enlaces de escritorio
+    const desktopLinkStyle = {
+        color: TEXT_DARK,
+        fontWeight: 600,
+        textTransform: 'none',
+        '&:hover': {
+            color: PRIMARY_BLUE,
+            backgroundColor: 'transparent',
+        }
+    };
+
+    // Componente del logo (ajustado para usar texto y MUI Box)
+    const Logo = (
+        <Box 
+            onClick={() => handleNavigationAndClose('/')} 
+            sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                cursor: 'pointer',
+                // Para centrar el logo en móvil si no hay otros elementos, o alinearlo a la izquierda
+                flexGrow: isMobile ? 1 : 0 
+            }}>
+            {/* Aquí puedes reemplazar 'C' por una imagen de logo real si tienes una URL */}
+            <Typography 
+                variant="h6" 
+                sx={{ 
+                    fontWeight: 700, 
+                    color: PRIMARY_BLUE, 
+                    textTransform: 'uppercase' 
+                }}>
+                CONTAHSA
+            </Typography>
+        </Box>
+    );
+
+    // --- Menú Desplegable (Móvil) ---
+    const drawerContent = (
+        <Box
+            sx={{ width: 250, backgroundColor: BACKGROUND_WHITE, height: '100%' }}
+            role="presentation"
+        >
+            <Box 
+                sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    p: 2, 
+                    borderBottom: `1px solid ${PRIMARY_BLUE}` 
+                }}
+            >
+                {Logo}
+                <IconButton onClick={() => setDrawerOpen(false)} sx={{ color: PRIMARY_BLUE }}>
+                    <CloseIcon />
+                </IconButton>
+            </Box>
+            
+            <List>
+                {navItems.map((item) => (
+                    <ListItem 
+                        button 
+                        key={item.label} 
+                        onClick={() => handleNavigationAndClose(item.path)}
+                    >
+                        <ListItemText 
+                            primary={item.label} 
+                            primaryTypographyProps={{ 
+                                fontWeight: 500, 
+                                color: TEXT_DARK 
+                            }} 
+                        />
+                    </ListItem>
+                ))}
+            </List>
+
+            {/* Botón de WhatsApp dentro del menú móvil */}
+            <Box sx={{ p: 2, pt: 1, mt: 2 }}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<WhatsAppIcon />}
+                    onClick={handleWhatsAppClick}
+                    fullWidth
+                    sx={{
+                        backgroundColor: ACCENT_GREEN, // Usamos el verde de acento
+                        '&:hover': {
+                            backgroundColor: '#008C86', // Un tono de verde ligeramente más oscuro al pasar el ratón
+                        },
+                        py: 1.5,
+                        borderRadius: 2,
+                        fontWeight: 700,
+                        boxShadow: '0 4px 10px rgba(0, 167, 157, 0.4)', // Sombra sutil
+                    }}
+                >
+                    Contactar Ahora
+                </Button>
+            </Box>
+        </Box>
+    );
 
     return (
-        // 1. HEADER: Fondo negro, y sombra sutil
-        <AppBar position="sticky" sx={{ 
-            bgcolor: HEADER_DARK, 
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.4)', 
-            borderBottom: `none` 
-        }}> 
-            <Toolbar sx={{ py: 1 }}> 
-                
-                {/* 2. NOMBRE DE LA EMPRESA (ENLACE A INICIO) */}
-                <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
-                    <Typography 
-                        variant="h5" 
-                        component={Link} 
-                        to="/" 
-                        sx={{ 
-                            color: TEXT_LIGHT, 
-                            textDecoration: 'none', 
-                            fontWeight: 700 
+        <AppBar position="sticky" elevation={isMobile ? 1 : 4} sx={{ backgroundColor: BACKGROUND_WHITE, borderBottom: `2px solid ${ACCENT_GREEN}` }}>
+            <Container maxWidth="lg">
+                <Toolbar disableGutters>
+                    {/* Logo (Visible siempre) */}
+                    {Logo}
+
+                    {/* Botones de Navegación (Solo Escritorio) */}
+                    {!isMobile && (
+                        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: 3 }}>
+                            {navItems.map((item) => (
+                                <Button 
+                                    key={item.label} 
+                                    component={RouterLink} 
+                                    to={item.path} 
+                                    sx={desktopLinkStyle}
+                                    onClick={() => handleNavigationAndClose(item.path)} // Usamos el handler para scroll
+                                >
+                                    {item.label}
+                                </Button>
+                            ))}
+                        </Box>
+                    )}
+
+                    {/* Botón Contactar/WhatsApp (Visible siempre) */}
+                    <Button
+                        variant="contained"
+                        startIcon={<WhatsAppIcon />}
+                        onClick={handleWhatsAppClick}
+                        sx={{
+                            ml: isMobile ? 'auto' : 3, // Alinea a la derecha en móvil o usa margen en escritorio
+                            backgroundColor: ACCENT_GREEN, 
+                            color: BACKGROUND_WHITE,
+                            '&:hover': {
+                                backgroundColor: PRIMARY_BLUE,
+                            },
+                            borderRadius: 1,
+                            fontWeight: 600,
+                            // Ocultar texto "Contactar Ahora" en móvil, mostrar solo el icono (excepto en el drawer)
+                            display: { xs: 'none', md: 'inline-flex' }, 
+                            py: 1,
+                            px: 2
                         }}
                     >
-                        CONTAHSA
-                    </Typography>
-                </Box>
+                        Contactar Ahora
+                    </Button>
 
-                {/* 3. BOTONES DE NAVEGACIÓN PRINCIPALES */}
-                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    {/* Estilo: Texto blanco sobre fondo negro, con hover sutil */}
-                    <Button 
-                        sx={{ 
-                            color: TEXT_LIGHT, 
-                            // Hover discreto (Blanco transparente)
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } 
-                        }} 
-                        component={Link} 
-                        to="/"
-                    >
-                        INICIO
-                    </Button>
-                    <Button 
-                        sx={{ 
-                            color: TEXT_LIGHT, 
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } 
-                        }} 
-                        component={Link} 
-                        to="/about"
-                    >
-                        SOBRE NOSOTROS
-                    </Button>
-                    <Button 
-                        sx={{ 
-                            color: TEXT_LIGHT, 
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } 
-                        }} 
-                        component={Link} 
-                        to="/services"
-                    >
-                        SERVICIOS
-                    </Button>
-                    <Button 
-                        sx={{ 
-                            color: TEXT_LIGHT, 
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' } 
-                        }} 
-                        component={Link} 
-                        to="/blog"
-                    >
-                        BLOG
-                    </Button>
-                </Box>
+                    {/* Botón de Menú (Solo Móvil) */}
+                    {isMobile && (
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            aria-label="menu"
+                            onClick={() => setDrawerOpen(true)}
+                            sx={{ color: TEXT_DARK, ml: 1 }}
+                        >
+                            <MenuIcon fontSize="large" />
+                        </IconButton>
+                    )}
+                </Toolbar>
+            </Container>
 
-                {/* 4. BOTÓN DE CONTACTO (Destacado) */}
-                <Button 
-                    variant="contained" 
-                    sx={{ 
-                        // El color normal del botón es el verde de acento.
-                        bgcolor: HEADER_DARK, 
-                        color: HEADER_DARK, 
-                        fontWeight: 'bold',
-                        borderRadius: '25px', 
-                        boxShadow: '0 4px 10px rgba(0, 167, 157, 0.4)', 
-                        '&:hover': { 
-                            // CORRECCIÓN FINAL: Cambiado de PRIMARY_BLUE a ACCENT_GREEN_DARK (Verde Oscuro)
-                            bgcolor: HEADER_DARK, 
-                            boxShadow: '0 4px 12px rgba(0, 140, 131, 0.5)' 
-                        },
-                        ml: { xs: 1, md: 3 } 
-                    }}
-                    component={Link}
-                    to="/contact"
-                >
-                    CONTÁCTANOS
-                </Button>
-
-            </Toolbar>
+            {/* Drawer/Menú Lateral (Móvil) */}
+            <Drawer
+                anchor="right"
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+            >
+                {drawerContent}
+            </Drawer>
         </AppBar>
     );
 };

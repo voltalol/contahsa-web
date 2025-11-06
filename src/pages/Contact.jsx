@@ -302,7 +302,7 @@ const Contact = () => {
                                 <InfoBlock 
                                     icon={<WhatsAppIcon />} 
                                     title="WhatsApp & Móvil" 
-                                    content="tel:+(504) XXXX-XXXX" // Usamos tel: para un enlace clicable
+                                    content="tel:+(504) 9487-6832" // Usamos tel: para un enlace clicable
                                     isLink={true}
                                 />
 
@@ -310,39 +310,10 @@ const Contact = () => {
                                 <InfoBlock 
                                     icon={<EmailIcon />} 
                                     title="Correo Electrónico" 
-                                    content="placeholder@contabilidad.com" 
+                                    content="contacto@contahsa.com" 
                                     isLink={true}
                                 />
                                 
-                                <Divider sx={{ my: 1, borderColor: SUB_TEXT_COLOR }} />
-
-                                {/* Horario */}
-                                <InfoBlock 
-                                    icon={<AccessTimeIcon />} 
-                                    title="Horario de Atención" 
-                                    content="Lunes a Viernes: 8:00 AM - 5:00 PM (CST)"
-                                />
-
-                                {/* Dirección */}
-                                <InfoBlock 
-                                    icon={<LocationOnIcon />} 
-                                    title="Oficina Central" 
-                                    content="[Placeholder de la Oficina o Ciudad Principal en Honduras]"
-                                />
-                            </Box>
-                            
-                            {/* Mapa de Google (Placeholder con iframe) */}
-                            <Box sx={{ mt: 5, height: 280, borderRadius: 3, overflow: 'hidden', boxShadow: '0 5px 20px rgba(0,0,0,0.1)' }}>
-                                <iframe 
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15440.093390888022!2d-87.16544574999999!3d14.08836155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6a72b0c6a5e1e1%3A0x8f2d5a3a7b5d1e1e!2sTegucigalpa%2C%20Honduras!5e0!3m2!1sen!2sus!4v1678888888888!5m2!1sen!2sus"
-                                    width="100%" 
-                                    height="100%" 
-                                    style={{ border: 0 }} 
-                                    allowFullScreen="" 
-                                    loading="lazy" 
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    title="Ubicación de la oficina"
-                                ></iframe>
                             </Box>
                         </Grid>
                     </Grid>
