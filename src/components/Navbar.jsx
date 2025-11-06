@@ -80,7 +80,7 @@ const Navbar = () => {
                 <Box sx={{ p: 0.5, bgcolor: PRIMARY_DARK, borderRadius: 1 }}>
                     <img 
                         // Usamos el logo alternativo para el menú lateral también
-                        src="/contahsalogo2.png" 
+                        src="/contahsalogosintexto.png" 
                         alt="Logo CONTAHSA Compacto" 
                         style={{ height: '30px', width: 'auto' }} 
                     />
