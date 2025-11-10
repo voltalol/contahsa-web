@@ -172,7 +172,7 @@ const Home = () => {
                             align="center"
                             sx={{ fontWeight: 700, color: PRIMARY_DARK, mb: { xs: 3, md: 2 } }}
                         >
-                            ¿Por qué elegir a CONTÁHSA?
+                            ¿Por qué elegir a CONTAHSA?
                         </Typography>
                     </ScrollAnimation>
                     
